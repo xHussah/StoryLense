@@ -1,0 +1,607 @@
+body {
+  color: white;
+  overflow-x: hidden;
+  overflow-y: auto; /* ensures stable scroll without flicker */
+  overscroll-behavior: none;
+}
+
+/* --- Smooth Fade In Up Animation (for header only) --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fadeInUp-animation {
+  animation: fadeInUp 1.2s ease forwards;
+  will-change: transform, opacity;
+  position: relative;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* --- Headings --- */
+h1 {
+  color: white;
+  text-align: left;
+  margin-left: 3vh;
+  font-size: 2rem;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+h1 img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 15px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Glow + scale on hover */
+h1 img:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px 3px rgba(156, 110, 255, 0.4);
+}
+
+/* --- Shelf Section --- */
+.shelf-section {
+  width: 100%;
+  text-align: center;
+  padding-top: 40px;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  color: #f7f7f7;
+  letter-spacing: 1px;
+}
+
+/* --- Movie Cards Container --- */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow-x: hidden;
+  gap: 10px;
+  width: 50%;
+  margin: 0 auto;
+  height: auto;
+  padding-bottom: 20px;
+  overflow: hidden;
+}
+
+/* --- Card Styles --- */
+.card {
+  flex: 0.5;
+  border-radius: 30px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.5s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+/* Expand on hover */
+.card:hover {
+  flex: 1;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(124, 92, 255, 0.25);
+}
+
+.card:hover img {
+  filter: brightness(0.8) blur(2px);
+}
+
+.card-content {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+  text-align: left;
+}
+
+.card:hover .card-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-content h3 {
+  font-size: 1.2rem;
+  color: #ffd166;
+  margin-bottom: 6px;
+}
+
+.card-content p {
+  margin: 2px 0;
+  color: #f3eaff;
+  font-size: 0.9rem;
+}
+
+/* --- Shelf Bar --- */
+.shelf-bar {
+  position: relative;
+  width: 80%;
+  height: 40px;
+  margin: -10px auto 1rem;
+  background: linear-gradient(to right, #6a4e23, #3c2a16);
+  border-radius: 10px;
+  box-shadow: inset 0 5px 8px rgba(0, 0, 0, 0.5), 0 3px 15px rgba(0, 0, 0, 0.6);
+}
+
+.shelf-bar::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+/* --- Three-Dots Menu --- */
+.card-actions {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.menu-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+.menu-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Popup */
+.menu-popup {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background: rgba(25, 15, 55, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 6px 0;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  animation: fadeIn 0.2s ease;
+}
+.menu-popup button {
+  background: none;
+  border: none;
+  color: #f5ecff;
+  padding: 8px 18px;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.menu-popup button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Edit Modal --- */
+.edit-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #1e1442;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 350px;
+  color: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  animation: popIn 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.96);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-content h3 {
+  text-align: center;
+  color: #e6dcff;
+  margin-bottom: 10px;
+}
+
+.modal-content label {
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  border: none;
+  margin-top: 5px;
+  border-radius: 6px;
+  padding: 8px;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: #2a1d59;
+  color: #fff;
+}
+
+.modal-content textarea {
+  resize: none;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.modal-buttons button {
+  background: #7c5bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(124, 92, 255, 0.3);
+  font-weight: 600;
+}
+
+.modal-buttons button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(124, 92, 255, 0.5);
+}
+
+button:active,
+.menu-btn:active,
+.save-btn:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* --- Header Layout --- */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+}
+
+.profile-section img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+  transition: transform 0.3s ease, box-shadow 0.4s ease;
+}
+
+.profile-section img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 8px 2px rgba(156, 110, 255, 0.25);
+}
+
+/* --- Hamburger Button --- */
+.hamburger {
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #f5eaff;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.hamburger:hover {
+  transform: rotate(90deg);
+}
+
+/* --- Side Menu --- */
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: -220px;
+  height: 100%;
+  width: 220px;
+  background: rgba(20, 10, 50, 0.95);
+  backdrop-filter: blur(10px);
+  transition: right 0.4s ease;
+  z-index: 1001;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.side-menu ul {
+  list-style: none;
+  padding: 60px 20px;
+}
+
+.side-menu ul li {
+  margin: 25px 0;
+}
+
+.side-menu ul li a {
+  position: relative;
+  display: inline-block;
+  color: #e6dcff;
+  text-decoration: none;
+  font-size: 1.5rem;
+  padding-bottom: 4px;
+  transition: all 0.3s ease;
+}
+
+.side-menu ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #a08bff;
+  transition: width 0.3s ease, left 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.side-menu ul li a:hover {
+  color: #a08bff;
+}
+
+.side-menu ul li a:hover::after {
+  width: 60%;
+  left: 50%;
+}
+
+.side-menu.open {
+  right: 0;
+}
+
+/* --- Settings Page --- */
+.settings-page {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background: rgba(20, 10, 50, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  color: #f5eaff;
+  transition: all 0.3s ease;
+}
+
+.settings-page:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 183, 255, 0.15);
+  border-color: rgba(0, 183, 255, 0.25);
+}
+
+.settings-page h2 {
+  color: #cdb9ff;
+  margin-top: 30px;
+  font-size: 1.3rem;
+}
+
+.settings-page label {
+  display: block;
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
+
+.settings-page input,
+.settings-page textarea,
+.settings-page select {
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #2a1d59;
+  color: white;
+  font-family: inherit;
+}
+
+.save-btn {
+  margin-top: 25px;
+  background: #7c5bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(124, 92, 255, 0.3);
+}
+
+.save-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(124, 92, 255, 0.5);
+}
+@media (max-width: 1024px) {
+  .container {
+    width: 80%;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .card {
+    flex: 1 1 calc(45% - 20px);
+    height: auto;
+  }
+
+  .card img {
+    height: 300px;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .side-menu {
+    width: 180px;
+  }
+}
+
+/* Mobile (≤ 768px) */
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto;
+  }
+
+  .top-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .profile-section img {
+    width: 45px;
+    height: 45px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-left: 0;
+  }
+
+  .hamburger {
+    font-size: 1.6rem;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+  }
+
+  .card {
+    flex: 1;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .card img {
+    height: 300px;
+  }
+
+  .shelf-bar {
+    width: 90%;
+    height: 30px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .side-menu {
+    width: 200px;
+    right: -200px;
+  }
+
+  .side-menu ul {
+    padding: 40px 15px;
+  }
+
+  .side-menu ul li a {
+    font-size: 1.2rem;
+  }
+}
+
+/* Small Mobile (≤ 480px) */
+@media (max-width: 480px) {
+  .container {
+    width: 100%;
+    gap: 15px;
+  }
+
+  .card {
+    width: 90%;
+  }
+
+  .card-content h3 {
+    font-size: 1rem;
+  }
+
+  .card-content p {
+    font-size: 0.8rem;
+  }
+
+  .save-btn,
+  .modal-buttons button {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .side-menu ul li a {
+    font-size: 1rem;
+  }
+}
