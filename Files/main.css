@@ -1,0 +1,259 @@
+/* All page style - START*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e4e4e4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+/* All page style - END */
+
+/* Header style - START */
+header {
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.search-container {
+    flex: 1;
+    min-width: 200px;
+    max-width: 500px;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 25px;
+    color: #e4e4e4;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.search-bar::placeholder {
+    color: rgba(228, 228, 228, 0.5);
+}
+
+.home-btn {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: none;
+    color: #e4e4e4;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.home-btn:hover {
+    color: white;
+    text-decoration: underline;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.user-pic {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    object-fit: cover;
+    margin-left: auto;
+}
+
+.user-pic:hover {
+    border-color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+/* Header style - END */
+
+/* Footer style - START */
+footer {
+background: rgba(26, 26, 46, 0.95);
+padding: 2.5rem 2rem 1.5rem;
+text-align: center;
+border-top: 2px solid rgba(255, 255, 255, 0.1);
+margin-top: auto;
+}
+
+.footer-content {
+max-width: 1400px;
+margin: 0 auto;
+}
+
+.vision-title {
+font-size: 1.3rem;
+font-weight: 600;
+color: #fff;
+margin-bottom: 1rem;
+letter-spacing: 1px;
+}
+
+.vision-text {
+font-size: 1rem;
+color: rgba(228, 228, 228, 0.8);
+margin-bottom: 1.5rem;
+line-height: 1.6;
+}
+
+.copyright {
+font-size: 0.9rem;
+color: rgba(228, 228, 228, 0.6);
+margin-bottom: 1.5rem;
+}
+
+.social-icons {
+display: flex;
+justify-content: center;
+gap: 1.5rem;
+margin-top: 1rem;
+}
+
+.social-icon {
+height: 35px;
+width: auto;
+transition: transform 0.3s ease;
+cursor: pointer;
+filter: brightness(0.9);
+}
+
+.social-icon:hover {
+transform: scale(1.2);
+filter: brightness(1.1);
+}
+/* Footer style - END */
+
+/* Responsive design - START */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
+    .header-content {
+        gap: 1rem;
+        justify-content: space-between;
+    }
+
+    .search-container {
+        order: 3;
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+    .home-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .user-pic {
+        height: 40px;
+        width: 40px;
+    }
+
+    main {
+        padding: 2rem 1rem;
+    }
+
+    .content-wrapper {
+        padding: 1.5rem;
+    }
+
+    footer {
+        padding: 2rem 1rem 1rem;
+    }
+
+    .vision-title {
+        font-size: 1.1rem;
+    }
+
+    .vision-text {
+        font-size: 0.9rem;
+    }
+
+    .social-icon {
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        height: 40px;
+    }
+
+    .home-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .user-pic {
+        height: 35px;
+        width: 35px;
+    }
+}
+.pic-options {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.option {
+    width: 6.3em;
+    height:6.3em;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: 0.2s;
+}
+
+.option:hover {
+    border-color: #4a90e2;
+}
+.option.selected {
+    border-color: #4a90e2;
+}
